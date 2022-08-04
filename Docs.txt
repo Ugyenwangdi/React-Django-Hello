@@ -1,0 +1,114 @@
+Create react app 
+
+$ npx create-react-app reactapp
+
+$ npm run build
+
+Gives the build folder within the react app
+
+We need to connect our template and then react static assets
+
+- In build, we need to connect to index.html
+
+1/ Go to django TEMPLATES in settings
+
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            
+            os.path.join(BASE_DIR, 'reactapp/build'),
+                
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+
+2/ Connect it to the urls, within our root directory of django project
+
+from django.contrib import admin
+from django.urls import path
+
+from django.views.generic import TemplateView
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', TemplateView.as_view(template_name='index.html')),
+]
+
+3/ We also want to connect to the static files in build, 
+
+STATIC_URL = 'static/'
+
+STATICFILES_DIRS = [ 
+    os.path.join(BASE_DIR, 'reactapp/build/static'),
+                    
+]
+
+
+3/ we will build some changes to App.js file 
+
+import logo from './logo.svg';
+import './App.css';
+
+function App() {
+  return (
+    <div className="App">
+      <div className="center-column">
+        <div className="item-row">
+          <span>One</span>
+        </div>
+
+        <div className="item-row">
+          <span>Two</span>
+        </div>
+
+        <div className="item-row">
+          <span>Three</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default App;
+
+
+4/ And also to App.js, since we have made some changes we need to run build in order to update the previous project 
+
+body {
+    background-color: #282c34;
+}
+
+.center-column {
+    width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 3px;
+    box-shadow: 6px 2px 30px 0px rgba(0, 0, 0, 0.75);
+}
+
+.item-row {
+    background-color: #11a5c0;
+    margin: 10px;
+    padding: 20px;
+    border-radius: 3px;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 900px;
+    box-shadow: 0px -1px 10px -4 rgba(0, 0, 0, 0.75);
+}
+
+
+$ npm run build
